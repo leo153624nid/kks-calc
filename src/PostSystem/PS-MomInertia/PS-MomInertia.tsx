@@ -1,27 +1,35 @@
-/* eslint-disable prefer-destructuring */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-undef */
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 import './PS-MomInertia.css'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, RefObject } from 'react'
 import gorRow from '../../img/icon-row-gor-48.png'
 import Calculate from '../../Calculate'
+import { PostSystemPropType } from '../../Types'
 
 // Блок для определения постоянного момента инерции для системы.
-function PSMomInertia(props) {
-    const kgm2 = useRef()
-    const kgcmsec2 = useRef()
+function PSMomInertia({ ps, changePS }: PostSystemPropType) {
+    const kgm2 = useRef() as RefObject<HTMLInputElement>
+    const kgcmsec2 = useRef() as RefObject<HTMLInputElement>
 
-    const [psMomI, setPSMomI] = useState(props.ps[0])
+    const [psMomI, setPSMomI] = useState(ps[0])
 
-    const handler = (ref, ps) => {
-        const newValueArr = Calculate(ref.current.name, ref.current.value, ps)
+    const handler = (ref: RefObject<HTMLInputElement>, psArr: number[]) => {
+        if (ref.current) {
+            const newValueArr = Calculate(
+                ref.current.name,
+                ref.current.value,
+                psArr
+            )
 
-        kgm2.current.value = newValueArr[0]
-        kgcmsec2.current.value = newValueArr[1]
+            if (kgm2.current) kgm2.current.value = String(newValueArr[0])
+            if (kgcmsec2.current)
+                kgcmsec2.current.value = String(newValueArr[1])
 
-        setPSMomI(newValueArr[1])
+            setPSMomI(newValueArr[1])
 
-        props.changePS({ momI: newValueArr[1] })
+            changePS({ momI: newValueArr[1] })
+        }
     }
 
     return (
@@ -41,10 +49,7 @@ function PSMomInertia(props) {
                         ref={kgm2}
                         name="kgm2 to kgcmsec2"
                     />
-                    <button
-                        type="button"
-                        onClick={() => handler(kgm2, props.ps)}
-                    >
+                    <button type="button" onClick={() => handler(kgm2, ps)}>
                         Ввод
                     </button>
                 </div>
@@ -62,10 +67,7 @@ function PSMomInertia(props) {
                         ref={kgcmsec2}
                         name="kgcmsec2 to kgm2"
                     />
-                    <button
-                        type="button"
-                        onClick={() => handler(kgcmsec2, props.ps)}
-                    >
+                    <button type="button" onClick={() => handler(kgcmsec2, ps)}>
                         Ввод
                     </button>
                 </div>

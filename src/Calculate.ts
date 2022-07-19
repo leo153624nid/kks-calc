@@ -1,10 +1,20 @@
+/* eslint-disable no-console */
+
 // Общая функция пересчета всех величин.
 // Получает метод пересчета, значение из соответствующего инпута и постоянные системы.
 // В зависимости от метода делает вычисления соответствующих величин.
 // Всегда возвращает массив с тремя значениями.
-function Calculate(method, firstVal, ps) {
+function Calculate(
+    method: string | null,
+    firstVal: string | null,
+    ps: number[]
+) {
+    if (!method || !firstVal) {
+        console.log('Неверное входное значение или метод пересчета')
+        return ps
+    }
+
     const firstValue = Number(firstVal)
-    // eslint-disable-next-line no-console
     console.log(method)
 
     let secondValue = 0
@@ -227,9 +237,8 @@ function Calculate(method, firstVal, ps) {
             ]
 
         default:
-            // eslint-disable-next-line no-alert
-            alert('Нет метода пересчета!')
-            return null
+            console.log('Нет метода пересчета!')
+            return ps
     }
 }
 

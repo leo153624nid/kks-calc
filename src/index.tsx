@@ -1,5 +1,5 @@
-/* eslint-disable no-undef */
 /* eslint-disable import/extensions */
+/* eslint-disable no-undef */
 /* eslint-disable import/no-unresolved */
 import React from 'react'
 import ReactDOM from 'react-dom/client'

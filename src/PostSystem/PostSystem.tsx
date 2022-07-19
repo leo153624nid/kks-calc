@@ -1,19 +1,15 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable prefer-destructuring */
 import './PostSystem.css'
 import React from 'react'
 import PSMomInertia from './PS-MomInertia/PS-MomInertia'
 import PSRigidity from './PS-Rigidity/PS-Rigidity'
 import PSReduction from './PS-Reduction/PS-Reduction'
+import { PostSystemPropType } from '../Types'
 
 // Секция "Постоянные системы".
 // Здесь определяются постоянные: "момент инерции", "податливость", "передаточное отношение"
 // и передаются в секции "Элемент до редукции", "Элемент после редукции" через общего родителя "Арр"
-// eslint-disable-next-line react/prop-types
-function PostSystem(props) {
-    const ps = props.ps
-    const changePS = props.changePS
+
+function PostSystem({ ps, changePS }: PostSystemPropType) {
     return (
         <div className="PostSystem">
             <h2 className="h2__PostSystem">

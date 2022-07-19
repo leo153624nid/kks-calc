@@ -3,13 +3,14 @@ import React, { useState } from 'react'
 import PostSystem from './PostSystem/PostSystem'
 import ElemBeforeReduction from './ElemBeforeReduction/ElemBeforeReduction'
 import ElemAfterReduction from './ElemAfterReduction/ElemAfterReduction'
+import { PStype } from './Types'
 
 function App() {
     const [ps, setPS] = useState([10.19, 981.354, 1])
 
     // Функция получения новых постоянных системы из дочерних компонентов
-    const changePS = (newPS) => {
-        let currentPS = []
+    const changePS = (newPS: PStype) => {
+        let currentPS: number[] = []
 
         if (newPS.momI) currentPS = [newPS.momI, ps[1], ps[2]]
 
@@ -38,7 +39,7 @@ function App() {
             </div>
 
             <footer>
-                <span>Made by Aleksey Chaykin</span>
+                <span>Created by Chaykin Aleksey</span>
             </footer>
         </div>
     )

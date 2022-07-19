@@ -1,6 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable prefer-destructuring */
 import './PS-Reduction.css'
 import React, { useState, useRef } from 'react'
 import gorRow from '../../img/icon-row-gor-48.png'
