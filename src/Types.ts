@@ -10,11 +10,6 @@ export type PostSystemPropType = {
     changePS: (arg: PStype) => void
 }
 
-// interface Current {
-//     name: string
-//     value: string
-// }
-
-// export interface RefType {
-//     current: Current
-// }
+export type EBRandEARPropType = {
+    ps: number[]
+}

@@ -1,23 +1,31 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable prefer-destructuring */
+/* eslint-disable no-undef */
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 import './EBRMomInertia.css'
-import React, { useRef } from 'react'
+import React, { RefObject, useRef } from 'react'
 import gorRow from '../../img/icon-row-gor-48.png'
 import Calculate from '../../Calculate'
+import { EBRandEARPropType } from '../../Types'
 
 // Блок для определения момента инерции элемента системы ДО редукции.
-function EBRMomInertia(props) {
-    const kgm2 = useRef()
-    const kgcmsec2 = useRef()
-    const momIotn = useRef()
+function EBRMomInertia({ ps }: EBRandEARPropType) {
+    const kgm2 = useRef() as RefObject<HTMLInputElement>
+    const kgcmsec2 = useRef() as RefObject<HTMLInputElement>
+    const momIotn = useRef() as RefObject<HTMLInputElement>
 
-    const handler = (ref, ps) => {
-        const newValueArr = Calculate(ref.current.name, ref.current.value, ps)
+    const handler = (ref: RefObject<HTMLInputElement>, psArr: number[]) => {
+        if (ref.current) {
+            const newValueArr = Calculate(
+                ref.current.name,
+                ref.current.value,
+                psArr
+            )
 
-        kgm2.current.value = newValueArr[0]
-        kgcmsec2.current.value = newValueArr[1]
-        momIotn.current.value = newValueArr[2]
+            if (kgm2.current) kgm2.current.value = String(newValueArr[0])
+            if (kgcmsec2.current)
+                kgcmsec2.current.value = String(newValueArr[1])
+            if (momIotn.current) momIotn.current.value = String(newValueArr[2])
+        }
     }
 
     return (
@@ -35,10 +43,7 @@ function EBRMomInertia(props) {
                         ref={kgm2}
                         name="kgm2 to kgcmsec2"
                     />
-                    <button
-                        type="button"
-                        onClick={() => handler(kgm2, props.ps)}
-                    >
+                    <button type="button" onClick={() => handler(kgm2, ps)}>
                         Ввод
                     </button>
                 </div>
@@ -56,10 +61,7 @@ function EBRMomInertia(props) {
                         ref={kgcmsec2}
                         name="kgcmsec2 to kgm2"
                     />
-                    <button
-                        type="button"
-                        onClick={() => handler(kgcmsec2, props.ps)}
-                    >
+                    <button type="button" onClick={() => handler(kgcmsec2, ps)}>
                         Ввод
                     </button>
                 </div>
@@ -75,10 +77,7 @@ function EBRMomInertia(props) {
                         ref={momIotn}
                         name="otn to kgcmsec2"
                     />
-                    <button
-                        type="button"
-                        onClick={() => handler(momIotn, props.ps)}
-                    >
+                    <button type="button" onClick={() => handler(momIotn, ps)}>
                         Ввод
                     </button>
                 </div>

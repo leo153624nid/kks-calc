@@ -1,23 +1,30 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable prefer-destructuring */
+/* eslint-disable no-undef */
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 import './EBRRigidity.css'
-import React, { useRef } from 'react'
+import React, { RefObject, useRef } from 'react'
 import gorRow from '../../img/icon-row-gor-48.png'
 import Calculate from '../../Calculate'
+import { EBRandEARPropType } from '../../Types'
 
 // Блок для определения податливости элемента системы ДО редукции.
-function EBRRigidity(props) {
-    const mnmrad = useRef()
-    const kgcm = useRef()
-    const rigOtn = useRef()
+function EBRRigidity({ ps }: EBRandEARPropType) {
+    const mnmrad = useRef() as RefObject<HTMLInputElement>
+    const kgcm = useRef() as RefObject<HTMLInputElement>
+    const rigOtn = useRef() as RefObject<HTMLInputElement>
 
-    const handler = (ref, ps) => {
-        const newValueArr = Calculate(ref.current.name, ref.current.value, ps)
+    const handler = (ref: RefObject<HTMLInputElement>, psArr: number[]) => {
+        if (ref.current) {
+            const newValueArr = Calculate(
+                ref.current.name,
+                ref.current.value,
+                psArr
+            )
 
-        mnmrad.current.value = newValueArr[0]
-        kgcm.current.value = newValueArr[1]
-        rigOtn.current.value = newValueArr[2]
+            if (mnmrad.current) mnmrad.current.value = String(newValueArr[0])
+            if (kgcm.current) kgcm.current.value = String(newValueArr[1])
+            if (rigOtn.current) rigOtn.current.value = String(newValueArr[2])
+        }
     }
 
     return (
@@ -33,10 +40,7 @@ function EBRRigidity(props) {
                         ref={mnmrad}
                         name="MNmrad to kgcm"
                     />
-                    <button
-                        type="button"
-                        onClick={() => handler(mnmrad, props.ps)}
-                    >
+                    <button type="button" onClick={() => handler(mnmrad, ps)}>
                         Ввод
                     </button>
                 </div>
@@ -52,10 +56,7 @@ function EBRRigidity(props) {
                         ref={kgcm}
                         name="kgcm to MNmrad"
                     />
-                    <button
-                        type="button"
-                        onClick={() => handler(kgcm, props.ps)}
-                    >
+                    <button type="button" onClick={() => handler(kgcm, ps)}>
                         Ввод
                     </button>
                 </div>
@@ -71,10 +72,7 @@ function EBRRigidity(props) {
                         ref={rigOtn}
                         name="otn to 1/kgcm"
                     />
-                    <button
-                        type="button"
-                        onClick={() => handler(rigOtn, props.ps)}
-                    >
+                    <button type="button" onClick={() => handler(rigOtn, ps)}>
                         Ввод
                     </button>
                 </div>
