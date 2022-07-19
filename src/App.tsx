@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import React, { useState } from 'react'
+import PostSystem from './PostSystem/PostSystem'
+import ElemBeforeReduction from './ElemBeforeReduction/ElemBeforeReduction'
+import ElemAfterReduction from './ElemAfterReduction/ElemAfterReduction'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [ps, setPS] = useState([10.19, 981.354, 1])
+
+    // Функция получения новых постоянных системы из дочерних компонентов
+    const changePS = (newPS) => {
+        let currentPS = []
+
+        if (newPS.momI) currentPS = [newPS.momI, ps[1], ps[2]]
+
+        if (newPS.rigidity) currentPS = [ps[0], newPS.rigidity, ps[2]]
+
+        if (newPS.reduction) currentPS = [ps[0], ps[1], newPS.reduction]
+
+        setPS(currentPS)
+        // eslint-disable-next-line no-console
+        console.dir(`PS = ${currentPS}`)
+    }
+
+    return (
+        <div className="App">
+            <header>
+                <span>
+                    <i>Калькулятор Крутильно-Колеблющихся Cистем</i>
+                </span>
+            </header>
+
+            <PostSystem changePS={changePS} ps={ps} />
+
+            <div className="elements">
+                <ElemBeforeReduction ps={ps} />
+                <ElemAfterReduction ps={ps} />
+            </div>
+
+            <footer>
+                <span>Made by Aleksey Chaykin</span>
+            </footer>
+        </div>
+    )
 }
 
-export default App;
+export default App

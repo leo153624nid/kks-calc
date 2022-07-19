@@ -1,0 +1,13 @@
+.PostSystem {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.h2__PostSystem {
+    padding: 10px 10px 10px 10px;
+    font-size: calc(10px + 2vmin);
+    margin: 0;
+    
+}
+
