@@ -1,3 +1,5 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 import './PostSystem.css'
 import React from 'react'
 import PSMomInertia from './PS-MomInertia/PS-MomInertia'
