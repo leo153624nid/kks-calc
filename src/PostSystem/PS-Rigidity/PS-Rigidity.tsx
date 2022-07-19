@@ -1,27 +1,35 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable prefer-destructuring */
+/* eslint-disable no-undef */
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+
 import './PS-Rigidity.css'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, RefObject } from 'react'
 import gorRow from '../../img/icon-row-gor-48.png'
 import Calculate from '../../Calculate'
+import { PostSystemPropType } from '../../Types'
 
 // Блок для определения постоянной податливости для системы.
-function PSRigidity(props) {
-    const mnmrad = useRef()
-    const kgcm = useRef()
+function PSRigidity({ ps, changePS }: PostSystemPropType) {
+    const mnmrad = useRef() as RefObject<HTMLInputElement>
+    const kgcm = useRef() as RefObject<HTMLInputElement>
 
-    const [psE0, setPSe0] = useState(props.ps[1])
+    const [psE0, setPSe0] = useState(ps[1])
 
-    const handler = (ref, ps) => {
-        const newValueArr = Calculate(ref.current.name, ref.current.value, ps)
+    const handler = (ref: RefObject<HTMLInputElement>, psArr: number[]) => {
+        if (ref.current) {
+            const newValueArr = Calculate(
+                ref.current.name,
+                ref.current.value,
+                psArr
+            )
 
-        mnmrad.current.value = newValueArr[0]
-        kgcm.current.value = newValueArr[1]
+            if (mnmrad.current) mnmrad.current.value = String(newValueArr[0])
+            if (kgcm.current) kgcm.current.value = String(newValueArr[1])
 
-        setPSe0(newValueArr[1])
+            setPSe0(newValueArr[1])
 
-        props.changePS({ rigidity: newValueArr[1] })
+            changePS({ rigidity: newValueArr[1] })
+        }
     }
     return (
         <div className="rigidity">
@@ -38,10 +46,7 @@ function PSRigidity(props) {
                         ref={mnmrad}
                         name="MNmrad to kgcm"
                     />
-                    <button
-                        type="button"
-                        onClick={() => handler(mnmrad, props.ps)}
-                    >
+                    <button type="button" onClick={() => handler(mnmrad, ps)}>
                         Ввод
                     </button>
                 </div>
@@ -57,10 +62,7 @@ function PSRigidity(props) {
                         ref={kgcm}
                         name="kgcm to MNmrad"
                     />
-                    <button
-                        type="button"
-                        onClick={() => handler(kgcm, props.ps)}
-                    >
+                    <button type="button" onClick={() => handler(kgcm, ps)}>
                         Ввод
                     </button>
                 </div>
