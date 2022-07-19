@@ -1,23 +1,30 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable prefer-destructuring */
+/* eslint-disable no-undef */
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 import './EARMomResist.css'
-import React, { useRef } from 'react'
+import React, { RefObject, useRef } from 'react'
 import gorRow from '../../img/icon-row-gor-48.png'
 import Calculate from '../../Calculate'
+import { EBRandEARPropType } from '../../Types'
 
 // Блок для определения момента сопротивления элемента системы ПОСЛЕ редукции.
-function EARMomResist(props) {
-    const mm = useRef()
-    const cm3 = useRef()
-    const momRotn = useRef()
+function EARMomResist({ ps }: EBRandEARPropType) {
+    const mm = useRef() as RefObject<HTMLInputElement>
+    const cm3 = useRef() as RefObject<HTMLInputElement>
+    const momRotn = useRef() as RefObject<HTMLInputElement>
 
-    const handler = (ref, ps) => {
-        const newValueArr = Calculate(ref.current.name, ref.current.value, ps)
+    const handler = (ref: RefObject<HTMLInputElement>, psArr: number[]) => {
+        if (ref.current) {
+            const newValueArr = Calculate(
+                ref.current.name,
+                ref.current.value,
+                psArr
+            )
 
-        mm.current.value = newValueArr[0]
-        cm3.current.value = newValueArr[1]
-        momRotn.current.value = newValueArr[2]
+            if (mm.current) mm.current.value = String(newValueArr[0])
+            if (cm3.current) cm3.current.value = String(newValueArr[1])
+            if (momRotn.current) momRotn.current.value = String(newValueArr[2])
+        }
     }
 
     return (
@@ -33,7 +40,7 @@ function EARMomResist(props) {
                         ref={mm}
                         name="RED mm to cm3"
                     />
-                    <button type="button" onClick={() => handler(mm, props.ps)}>
+                    <button type="button" onClick={() => handler(mm, ps)}>
                         Ввод
                     </button>
                 </div>
@@ -51,10 +58,7 @@ function EARMomResist(props) {
                         ref={cm3}
                         name="RED cm3 to mm"
                     />
-                    <button
-                        type="button"
-                        onClick={() => handler(cm3, props.ps)}
-                    >
+                    <button type="button" onClick={() => handler(cm3, ps)}>
                         Ввод
                     </button>
                 </div>
@@ -70,10 +74,7 @@ function EARMomResist(props) {
                         ref={momRotn}
                         name="RED otn to cm3"
                     />
-                    <button
-                        type="button"
-                        onClick={() => handler(momRotn, props.ps)}
-                    >
+                    <button type="button" onClick={() => handler(momRotn, ps)}>
                         Ввод
                     </button>
                 </div>
