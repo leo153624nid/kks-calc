@@ -1,24 +1,34 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable no-undef */
 import './PS-Reduction.css'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, RefObject } from 'react'
 import gorRow from '../../img/icon-row-gor-48.png'
 import Calculate from '../../Calculate'
+import { PostSystemPropType } from '../../Types'
 
 // Блок для определения постоянного передаточного отношения для системы.
-function PSReduction(props) {
-    const stepRed = useRef()
-    const ratio = useRef()
+function PSReduction({ ps, changePS }: PostSystemPropType) {
+    const stepRed = useRef() as RefObject<HTMLInputElement>
+    const ratio = useRef() as RefObject<HTMLInputElement>
 
-    const [psRed, setPSred] = useState(props.ps[2])
+    const [psRed, setPSred] = useState(ps[2])
 
-    const handler = (ref, ps) => {
-        const newValueArr = Calculate(ref.current.name, ref.current.value, ps)
+    const handler = (ref: RefObject<HTMLInputElement>, psArr: number[]) => {
+        if (ref.current) {
+            const newValueArr = Calculate(
+                ref.current.name,
+                ref.current.value,
+                psArr
+            )
 
-        stepRed.current.value = newValueArr[0]
-        ratio.current.value = newValueArr[1]
+            if (stepRed.current) stepRed.current.value = String(newValueArr[0])
+            if (ratio.current) ratio.current.value = String(newValueArr[1])
 
-        setPSred(newValueArr[1])
+            setPSred(newValueArr[1])
 
-        props.changePS({ reduction: newValueArr[1] ** 2 })
+            changePS({ reduction: newValueArr[1] ** 2 })
+        }
     }
     return (
         <div className="Reduction">
@@ -33,10 +43,7 @@ function PSReduction(props) {
                         ref={stepRed}
                         name="stepRed to ratio"
                     />
-                    <button
-                        type="button"
-                        onClick={() => handler(stepRed, props.ps)}
-                    >
+                    <button type="button" onClick={() => handler(stepRed, ps)}>
                         Ввод
                     </button>
                 </div>
@@ -52,10 +59,7 @@ function PSReduction(props) {
                         ref={ratio}
                         name="ratio to stepRed"
                     />
-                    <button
-                        type="button"
-                        onClick={() => handler(ratio, props.ps)}
-                    >
+                    <button type="button" onClick={() => handler(ratio, ps)}>
                         Ввод
                     </button>
                 </div>
